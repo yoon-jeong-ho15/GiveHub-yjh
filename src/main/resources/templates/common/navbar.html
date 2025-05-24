@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Header with Slide-up Menu</title>
+
+<!--	<style>-->
+<!--		.logged-in .main_menu_wrap a {-->
+<!--			color: #1a1a1a !important;-->
+<!--		}-->
+
+<!--		.logged-in .login_wrap button {-->
+<!--			background: none;-->
+<!--			color: #1a1a1a !important;-->
+<!--			border: none;-->
+<!--			font-size: 1rem;-->
+<!--			font-weight: 500;-->
+<!--			cursor: pointer;-->
+<!--		}-->
+<!--	</style>-->
+</head>
+<body>
+
+	<header class="navbar" th:fragment="navbar">
+		<div id="top_bar" class="top_wrap">
+			<div id="logo" class="logo_main logo_color">
+				<a href="/"> <img src="/img/logo_color.svg" alt="Harmony 로고">
+				</a>
+			</div>
+			<nav id="main_menu" class="main_menu_wrap">
+				<ul>
+					<li><a href="/donation/donationlist">게시판</a></li>
+				</ul>
+			</nav>
+			<div id="login_bar" class="login_wrap">
+				<button th:if="${session.loginUser == null}" id="login" type="button" onclick="location.href='/member/login'">
+					로그인
+				</button>
+				<button th:if="${session.loginUser != null}" id="myPage" type="button" onclick="location.href='/member/mypage'">
+					마이페이지
+				</button>
+				<button th:if="${session.loginUser == null}" id="join" type="button" onclick="location.href='/member/join'">
+					회원가입
+				</button>
+				<button th:if="${session.loginUser != null}" id="logout" type="button" onclick="location.href='/member/logout'">
+					로그아웃
+				</button>
+			</div>
+		</div>
+		<div id="slide_up_menu" class="img_menu">
+			<div class="slide_up_inner_menu">
+				<ul>
+					<a href="/donation/donationlist">
+						<li>후원게시판</li>
+						<li class="main_menu_img"><img
+							src="/img/Baby_wearing_a_head_correction_helmet.jpg"
+							alt="후원 게시판 이미지"></li>
+					</a>
+				</ul>
+				<ul>
+					<a href="/news/newsList">
+						<li>소식게시판</li>
+						<li class="main_menu_img"><img
+							src="/img/baby_looking_out_the_window.jpg" alt="소식 게시판 이미지">
+					</li>
+					</a>
+				</ul>
+			</div>
+		</div>
+	</header>
+<!--	<script src="/js/tinymce/common.js"></script>-->
+	
+
+
+</body>
+</html>

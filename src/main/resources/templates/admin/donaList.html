@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>기부 목록, 관리</title>
+    <link href="../../../css/reset.css" rel="stylesheet" type="text/css">
+    <link href="../../../css/common.css" rel="stylesheet" type="text/css">
+    <link href="../../../css/admin.css" rel="stylesheet" type="text/css">
+    <style>
+        .container {
+            display: flex; /* Flexbox 사용 */
+            height: 100vh; /* 화면 전체 높이 */
+        }
+
+        .content {
+            flex-grow: 1; /* 나머지 화면 차지 */
+            padding: 20px; /* 여백 */
+            overflow: auto; /* 내용이 넘칠 경우 스크롤 */
+        }
+    </style>
+</head>
+<body>
+<div class="container" style="margin: 0">
+    <div th:replace="~{admin/sidebar.html :: side}"></div>
+    <div class="content" style="margin-left: 200px">
+        <div class="donalist">
+            <table>
+                <caption class="admin_title">기부 목록</caption>
+                <tr>
+                    <th width="20px">번호</th>
+                    <th width="250px">제목</th>
+                    <th width="100px">작성자</th>
+                    <th width="150px">작성일</th>
+                    <th width="100px">카테고리</th>
+                    <th width="80px">목표금액</th>
+                <tr>
+                <tr align="center" class="selectlist" th:each="d : ${list}">
+                    <td th:text="${d.doNo}"></td>
+                    <td th:text="${d.doTitle}"></td>
+                    <td th:text="${d.memName}"></td>
+                    <td th:text="${d.doCreateDate}"></td>
+                    <td th:text="${d.doCategory}"></td>
+                    <td th:text="${d.doGoal}"></td>
+                </tr>
+            </table>
+        </div>
+        <div align="center">
+            <input class="blackbutton" type="button" id="delete" value="삭제하기"/>
+        </div>
+    </div>
+</div>
+<script>
+    window.onload = () => {
+        let selectedNo = 0;
+        let tr = null;
+
+        document.getElementById('delete').addEventListener('click', () => {
+            if (selectedNo === 0) {
+                alert('목록을 선택해주세요.');
+            } else {
+                if (confirm('정말 삭제하시겠습니까?')){
+                    location.href = '/admin/donaDelete/' + selectedNo;
+                    tr.remove();
+                }else{
+                    selectedNo = 0;
+                }
+            }
+        });
+
+        document.querySelectorAll('.selectlist').forEach((tr) => {
+            tr.addEventListener('click', () => {
+                selectedNo = tr.children[0].innerText;
+                alert(tr.children[1].innerText + '가 선택되었습니다.');
+                tr = tr.children[0];
+            });
+        });
+    }
+</script>
+</body>
+</html>

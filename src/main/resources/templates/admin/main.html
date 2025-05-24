@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Insert title here</title>
+    <link href="../../../css/reset.css" rel="stylesheet" type="text/css">
+    <link href="../../../css/common.css" rel="stylesheet" type="text/css">
+    <link href="../../../css/admin.css" rel="stylesheet" type="text/css">
+    <style>
+        .container {
+            display: flex; /* Flexbox 사용 */
+            height: 100vh; /* 화면 전체 높이 */
+        }
+        .content {
+            flex-grow: 1; /* 나머지 화면 차지 */
+            padding: 20px; /* 여백 */
+            overflow: auto; /* 내용이 넘칠 경우 스크롤 */
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4=" crossorigin="anonymous"></script>
+</head>
+<body>
+<div class="container" style="margin: 0">
+    <div th:replace="~{admin/sidebar.html :: side}"></div>
+    <div class="content" style="margin-left: 200px">
+        <div class="userlist">
+            <table>
+                <caption class="admin_title">회원 목록</caption>
+                <thead>
+                <tr align="center">
+                    <th width="100px">번호</th>
+                    <th width="100px">유형</th>
+                    <th width="100px">이름</th>
+                    <th width="100px">아이디</th>
+                    <th width="150px">주소</th>
+                    <th width="120px">주최자 권한 대기</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr align="center" class="selectlist" th:each="m : ${list}">
+                    <td th:text="${m.memNo}"></td>
+                    <td th:text="${m.memType == '0' ? '일반 회원' : m.memType == '1' ? '주최자' : '관리자'}"></td>
+                    <td th:text="${m.memName}"></td>
+                    <td th:text="${m.memId}"></td>
+                    <td th:text="${m.memAddress}"></td>
+                    <td th:text="${m.memType == '1' && m.memConfirm == 'W' ? '승인대기' : m.memType == '1' && m.memConfirm == 'N' ? '승인완료' : ''}"></td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="button_wrap">
+                <input class="blackbutton" id="userbutton" type="button" value="수정/삭제하기"/>
+            </div>
+        </div>
+        <br><br>
+        <form id="userDetailForm" method="post">
+            <div id="userdetail" class="userdetail_wrap" style="visibility: hidden">
+                <h2 class="admin_title">회원 정보</h2>
+                <input type="hidden" id="no" name="memNo">
+                <div>
+                    <input type="radio" id="user" value="0" name="memType"/>
+                    <label for="user">일반 회원</label>
+                    <input type="radio" id="or" value="1" name="memType"/>
+                    <label for="or">주최자</label>
+                </div>
+                <table>
+                    <tr>
+                        <td>이름　</td>
+                        <td class="text_inner"><input type="text" name="memName" id="name" readonly/></td>
+                    </tr>
+                    <tr>
+                        <td>아이디</td>
+                        <td class="text_inner"><input type="text" name="memId" id="id" readonly/></td>
+                    </tr>
+                    <tr>
+                        <td>등급　</td>
+                        <td>
+                            <select id="grade" name="memGrade">
+                                <option id="UNRANK">UNRANK</option>
+                                <option id="BRONZE">BRONZE</option>
+                                <option id="SILVER">SILVER</option>
+                                <option id="GOLD">GOLD</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>승인 </td>
+                        <td>
+                            <select id="confirm" name="memConfirm">
+                                <option id="W" value="W">승인대기</option>
+                                <option id="N" value="N">승인완료</option>
+                            </select>
+                        </td>
+                    </tr>
+                </table>
+                <div class="button_wrap">
+                    <input class="blackbutton" type="button" id="update" value="수정하기"/>
+                    <input class="blackbutton" type="button" id="delete" value="삭제하기"/>
+                    <input class="blackbutton" type="button" id="cancle" value="취소하기"/>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+<script th:inline="javascript">
+    window.onload = () => {
+        const userDetail = document.getElementById('userdetail');
+        let selectedNo = 0;
+
+        document.getElementById('userbutton').addEventListener('click', () => {
+            if (selectedNo === 0) {
+                alert('목록을 선택해주세요.');
+            } else {
+                $.ajax({
+                    url:'/admin/selectNo',
+                    data:{no:selectedNo},
+                    success:data=>{
+                        if (data.memType == 2){
+                            selectedNo = 0;
+                            userDetail.style.visibility = 'hidden';
+                            alert('관리자는 수정/삭제를 못합니다.')
+                        }else{
+                            if (data.memType == 0){
+                                document.querySelector('#user').checked = true;
+                            }else{
+                                document.querySelector('#or').checked = true;
+                            }
+                            document.querySelector('#name').value = data.memName;
+                            document.querySelector('#id').value = data.memId;
+                            document.querySelector('#' + data.memGrade).selected = true;
+                            document.querySelector('#no').value = data.memNo;
+                            document.querySelector('#' + data.memConfirm).selected = true;
+                        }
+                    },
+                    error:data=>console.log(data)
+                });
+                userDetail.style.visibility = 'visible';
+            }
+        });
+
+        document.getElementById('cancle').addEventListener('click', () => {
+            userDetail.style.visibility = 'hidden';
+            selectedNo = 0;
+        });
+
+        document.querySelectorAll('.selectlist').forEach((tr) => {
+            tr.addEventListener('click', () => {
+                userDetail.style.visibility = 'hidden';
+                selectedNo = tr.children[0].innerText;
+                alert(tr.children[2].innerText + '님이 선택되었습니다.');
+            });
+        });
+
+        const form = document.querySelector('#userDetailForm');
+        document.querySelector('#update').addEventListener('click', ()=>{
+            form.action = '/admin/memberUpdate';
+            form.submit();
+        });
+
+        document.querySelector('#delete').addEventListener('click', ()=>{
+            if (confirm('정말 삭제하시겠습니까?')){
+                form.action = '/admin/memberDelete';
+                form.submit();
+            }
+        });
+    };
+</script>
+</html>

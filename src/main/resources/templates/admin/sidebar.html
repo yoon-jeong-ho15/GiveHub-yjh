@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:fragment="side">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+	<link href="../../../css/reset.css" rel="stylesheet" type="text/css">
+	<link href="../../../css/common.css" rel="stylesheet" type="text/css">
+	<link href="../../../css/admin.css" rel="stylesheet" type="text/css">
+<style>
+	#sidebar {
+		height: 100vh;
+		display: flex;
+		background: white;
+		flex-direction: column;
+		overflow: hidden;
+		margin: 0;
+		align-items: center;
+		padding-top: 5rem;
+	}
+	.blackbutton{
+		background: white;
+		color: black;
+	}
+</style>
+</head>
+<body>
+	<div id="sidebar">
+		<button type="button" class="blackbutton"
+			th:onclick="|location.href='/admin/main'|" id="memManage">회원관리</button>
+		<button type="button" class="blackbutton"
+			th:onclick="|location.href='/admin/donaList'|" id="donaList">기부게시판</button>
+		<button type="button" class="blackbutton"
+			th:onclick="|location.href='/admin/newsList'|" id="newsList">소식게시판</button>
+		<button type="button" class="blackbutton"
+				th:onclick="|location.href='/member/logout'|" id="logout">로그아웃</button>
+	</div>
+</body>
+</html>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<link href="/css/reset.css" rel="stylesheet" type="text/css">
+<link href="/css/common.css" rel="stylesheet" type="text/css">
+<link href="/css/navBar.css" rel="stylesheet" type="text/css">
+<link href="/css/page.css" rel="stylesheet" type="text/css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<meta charset="utf-8">
+<title>아이디 찾기</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>기부 내역 조회</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+	rel="stylesheet">
+<style>
+	body {
+		height: calc(100vh - 247px);
+	}
+	.notice_text {
+		width: 17.4rem;
+		font-size: 0.8rem;
+		color: #2ab54c;
+		margin: 0.5rem 0 0.8rem;
+		text-align: left;
+		font-weight: 400;
+	}
+	div#mail_number {
+		margin-left: 6.9rem;
+		margin-top: -1rem;
+		margin-bottom: 2.5rem;
+	}
+
+</style>
+</head>
+<body>
+	<div th:replace="~{/common/navbar.html :: navbar}"></div>
+	<script src="/js/common.js"></script>
+	<div class="container page_container">
+		<div class="inner_container">
+			<h2>아이디 찾기</h2>
+			<p class="subtitle">회원가입 시 입력한 정보로 아이디를 찾을 수 있습니다.</p>
+			<form action="findMyId" method="post">
+				<span class="text_style">
+				<input id="memName" name="memName" type="text">
+					</span>
+				<span class="notice_text">회원가입시 등록한 이름을 입력해 주세요</span>
+				<span class="text_style">
+					<input type="text" id="memEmail" name="memEmail" ></span>
+				<span class="notice_text">회원가입시 등록한 이메일을 입력해 주세요</span>
+				<span class="check_btn">
+				<button type="button" id="prove_btn" class="page_btn">인증번호받기</button></span>
+
+				<div class="form-group" id="mail_number" name="mail_number" style="visibility: hidden">
+					<span class="text_style">
+					 <input type="text" name="confirmNumber" id="confirmNumber" class="form-control" placeholder="인증번호 입력">
+					</span>
+					<span id="mail-check-warn"></span>
+					<button type="button" name="confirmBtn" id="confirmBtn" style="margin-top: 20px">이메일 인증</button>
+					<br>
+					<span class="text_style">
+					 <input type="hidden" id="Confirm" name="Confirm" value="">
+					</span>
+				</div>
+
+			</form>
+		</div>
+	</div>
+	<footer>
+		<div th:replace="~{/common/footer.html :: footer_bar}"></div>
+	</footer>
+
+	<script type="text/javascript">
+	
+		document.getElementById('prove_btn').addEventListener('click',()=>{
+			$.ajax({
+				url:'/findIdemailCheck',
+				method:'post',
+				data:{email:document.getElementById('memEmail').value},
+				success:data=>{
+                    document.querySelector('#Confirm').value = data;
+                    document.querySelector('#mail_number').style.visibility = 'visible';
+					alert("인증번호가 발급되었습니다. 메일함을 확인해 주세요.");
+				},
+				error:data=> {
+					console.log('실패');
+					alert("메일 요청에 실패했습니다. 다시 시도해주세요.");
+				}
+		});
+		});
+		
+		document.getElementById('confirmBtn').addEventListener('click',()=>{
+			const confirmNumber = document.getElementById('confirmNumber').value;
+			const confirm = document.getElementById('Confirm').value;
+			const email = document.getElementById('memEmail').value;
+			if(confirmNumber == confirm){
+				alert('인증 완료');
+				
+				 window.location.href = `/findmyidsuccess?email=${encodeURIComponent(email)}`;
+				
+			}else{
+				alert('인증 실패');
+			}
+		});
+		
+	</script>
+	
+
+</body>
+</html>

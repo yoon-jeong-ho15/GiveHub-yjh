@@ -1,0 +1,153 @@
+@charset "UTF-8";
+header {
+    width: 100%;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 80px;
+    line-height: 80px;
+    z-index: 1;
+    transition: height 0.3s ease;
+    background: rgba(255, 255, 255, 0.3);
+    backdrop-filter: blur(20px);
+}
+
+
+.top_wrap{
+	width: 94%;
+    padding: 0 3%;
+	height: 80px;
+    z-index: 1;
+}
+div#logo {
+    width: 65px;
+}
+.logo_main a {
+    width: 60px;
+	height: 100%;
+    display: flex;
+    align-items: center;
+}
+div#top_bar {
+	margin: 0 auto;
+	display: flex;
+	justify-content: space-between;
+	
+}
+
+li.main_menu_img {
+   width: 354px;
+}
+
+img {
+   width: 100%;
+}
+
+nav#main_menu>Ul>li>a {
+   display: block;
+   position: absolute;
+   z-index: 1;
+   color: #fff;
+}
+
+nav#main_menu ul li a {
+    z-index: 2; /* 게시판 링크를 상위 레이어에 표시 */
+    position: relative; /* z-index 적용을 위해 position 설정 */
+    color: #fff;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+.img_menu ul {
+   display: inline-block;
+   margin-top: 1rem;
+}
+
+nav#main_menu {
+    width: 75.5%;
+    /*padding-left: 7%;*/
+}
+
+div.slide_up_inner_menu>ul:first-child {
+   margin-right: 8rem;
+}
+
+.img_menu li {
+	margin-bottom:0.5rem;
+   line-height: 1.5rem;
+}
+
+.main_menu_wrap ul {
+    height: 100%;
+}
+
+.main_menu_wrap li {
+    height: 100%;
+}
+
+div#slide_up_menu {
+    display: flex;
+    width: 100%;
+    position: absolute;
+    top: -270px;
+    z-index: 0;
+    transition: top 0.3s ease;
+    justify-content: center;
+}
+.slide_up_inner_menu {
+    width: 100%;
+    padding-left: 12.9%;
+}
+.slide_up_inner_menu a>li {
+	color:#fff;
+}
+.slide_up_inner_menu a>li>img {
+	border-radius: 17px;
+}
+.login_wrap {
+	display: flex;
+	justify-content: space-between;
+}
+.login_wrap button {
+    background: none;
+    color: #fff;
+    border: none;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+button#myPage, button#login {
+    transform: translateX(-45%);
+}
+
+/* header end */
+
+/* footer */
+footer {
+    background: #31BC7E;
+}
+
+footer .logo_white {
+    width: 70px;
+}
+
+footer .footer_text01 a, footer span {
+    color: #fff;
+}
+
+footer .footer_text01 a {
+    margin-right: 1rem;
+    font-size: 1.2rem;
+    font-weight: 500;
+}
+
+footer span {
+    font-size: 1rem;
+}
+
+.footer_text {
+    padding: 1.9rem 0 0;
+}
+/* footer end */

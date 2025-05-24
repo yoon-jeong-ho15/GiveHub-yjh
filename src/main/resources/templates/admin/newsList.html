@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Title</title>
+<link href="../../../css/reset.css" rel="stylesheet" type="text/css">
+<link href="../../../css/common.css" rel="stylesheet" type="text/css">
+<link href="../../../css/admin.css" rel="stylesheet" type="text/css">
+	<style>
+		.container {
+			display: flex; /* Flexbox 사용 */
+			height: 100vh; /* 화면 전체 높이 */
+		}
+		.content {
+			flex-grow: 1; /* 나머지 화면 차지 */
+			padding: 20px; /* 여백 */
+			overflow: auto; /* 내용이 넘칠 경우 스크롤 */
+		}
+	</style>
+</head>
+<body>
+	<div class="container" style="margin-left: 0">
+		<div class="sidebar" th:insert="admin/sidebar.html :: side"></div>
+		<div class="content" style="margin-left: 200px">
+			<h1 class="admin_title">소식 목록관리</h1>
+			<div class="donationList">
+				<table>
+					<tr>
+						<th>번호</th>
+						<th>제목</th>
+						<th>기부 제목</th>
+						<th width="150px">작성일</th>
+					</tr>
+					<tr align="center" class="selectlist" th:each="n : ${list}">
+						<td th:text="${n.newsNo}"></td>
+						<td th:text="${n.newsTitle}"></td>
+						<td th:text="${n.doTitle}"></td>
+						<td th:text="${n.newsCreateDate}"></td>
+					</tr>
+				</table>
+				<div align="center">
+					<input class="blackbutton" id="delete" type="button" value="삭제하기" />
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+<script>
+	window.onload = () => {
+		let selectedNo = 0;
+		const tr = null;
+
+		document.getElementById('delete').addEventListener('click', () => {
+			if (selectedNo === 0) {
+				alert('목록을 선택해주세요.');
+			} else {
+				if (confirm('정말 삭제하시겠습니까?')){
+					location.href="/admin/newsDelete/" + selectedNo;
+					tr.remove();
+				}else{
+					selectedNo = 0;
+				}
+			}
+		});
+
+		document.querySelectorAll('.selectlist').forEach((tr) => {
+			tr.addEventListener('click', () => {
+				selectedNo = tr.children[0].innerText;
+				alert(tr.children[1].innerText + '가 선택되었습니다.');
+				tr = tr.children[0];
+			});
+		});
+	}
+</script>
+</html>
