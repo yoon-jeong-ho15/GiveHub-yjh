@@ -14,12 +14,12 @@ import java.util.List;
 @Component
 public class CloudflareR2Client {
     private final S3Client s3Client;
-    private final S3Presigner s3Presigner;
+//    private final S3Presigner s3Presigner;
 
 
-    public CloudflareR2Client(S3Client s3Client, S3Presigner s3Presigner){
+    public CloudflareR2Client(S3Client s3Client){
         this.s3Client = s3Client;
-        this.s3Presigner = s3Presigner;
+//        this.s3Presigner = s3Presigner;
     }
 
     public List<Bucket> listBuckets() {
@@ -61,6 +61,18 @@ public class CloudflareR2Client {
             System.out.println("Request ID: " + e.requestId());
             throw new RuntimeException("Failed to upload image"+e.getMessage());
         }
+    }
+
+    public void moveImage(String key){
+        CopyObjectRequest copyRequest = CopyObjectRequest.builder()
+                .sourceBucket("gh-temp")
+                .sourceKey(key)
+                .destinationBucket("gh-uploads")
+                .destinationKey(key)
+                .build();
+
+        s3Client.copyObject(copyRequest);
+
     }
 
 //    public String generateUploadUrl(String bucket, String key) {

@@ -29,7 +29,7 @@ public class ImageController {
 	private final DonationService dService;
 	private final NewsService nService;
 	private final CloudflareR2Client r2Client;
-	private String tempPubURL = "https://pub-13a1175e80194d83800634227cb8db0c.r2.dev";
+	private String tempPubURL = "https://pub-3bb314a7c29441ef992a38858df220b1.r2.dev";
 	private String uploadsPubURL = "https://pub-4761268efaff4d7abd91082aacc5a4a6.r2.dev";
 
 	@PostMapping("/temp")
@@ -66,33 +66,33 @@ public class ImageController {
 //		return length==delcount? true:false;
 //	}
 //
-//	@PostMapping("/upload")
-//	@ResponseBody
-//	public boolean saveUpload(
-//			@RequestParam(value="uploadFiles", required=false) List<String> list,
-//			@RequestParam("bid") int bid,
-//			@RequestParam("boardType") String boardType,
-//			@RequestParam("content") String content) {
-//		boolean isUploaded = iService.saveUpload(list, bid, boardType);
-//		System.out.println("==========saveUpload==========");
-//		System.out.println("boardType : "+boardType);
-//		System.out.println("bid : "+bid);
-//		System.out.println("--content before insert into db --\n"+content+"\n----------");
-//		System.out.println("isUploaded : "+isUploaded);
-//		System.out.println("==============================");
-//		int result = 0;
-//		if (isUploaded) {
-//			if(boardType.equals("donation")) {
-//				result = dService.setContent(bid, content);
-//			}else {
-//				result = nService.setContent(bid, content);
-//			}
-//		}
-//		if(result>0) {
-//			return true;
-//		}
-//		return false;
-//	}
+	@PostMapping("/upload")
+	@ResponseBody
+	public boolean saveUpload(
+			@RequestParam(value="uploadFiles", required=false) List<String> list,
+			@RequestParam("bid") int bid,
+			@RequestParam("boardType") String boardType,
+			@RequestParam("content") String content) {
+		boolean isUploaded = iService.saveUpload(list, bid, boardType);
+		System.out.println("==========saveUpload==========");
+		System.out.println("boardType : "+boardType);
+		System.out.println("bid : "+bid);
+		System.out.println("--content before insert into db --\n"+content+"\n----------");
+		System.out.println("isUploaded : "+isUploaded);
+		System.out.println("==============================");
+		int result = 0;
+		if (isUploaded) {
+			if(boardType.equals("donation")) {
+				result = dService.setContent(bid, content);
+			}else {
+				result = nService.setContent(bid, content);
+			}
+		}
+		if(result>0) {
+			return true;
+		}
+		return false;
+	}
 	
 	//updateBoard(){
 	//똑같이 iService.saveUpload(list, bid, boardType)로 사진 저장.

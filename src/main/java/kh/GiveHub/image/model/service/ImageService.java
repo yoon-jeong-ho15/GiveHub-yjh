@@ -33,9 +33,8 @@ public class ImageService {
 	
 	public String saveTemp(MultipartFile file,
 			String imgName, String imgType) {
-		r2Client.listBuckets();
 		SimpleDateFormat sdf = new SimpleDateFormat("yyMMddHHmmssSSS");
-		int ranNum = (int)(Math.random()*10000);
+		int ranNum = (int)(Math.random()*100);
 		String rename = sdf.format(new Date())+ranNum+"_"+imgName;
 		if (imgType.equals("0")) {
 			rename = "T"+rename;
@@ -47,12 +46,16 @@ public class ImageService {
             throw new RuntimeException("Failed to get bytes from image"+ex.getMessage());
         }
 
-        r2Client.uploadImage("temp", rename, data);
+        r2Client.uploadImage("gh-temp", rename, data);
 
 		return rename;
 	}
 
-//	public boolean saveUpload(List<String> list, int bid, String boardType) {
+	public boolean saveUpload(List<String> list, int bid, String boardType) {
+		for (String name : list){
+			String filename = name.substring(name.lastIndexOf("/")+1);
+
+		}
 //		File dir = new File(uploadPath);
 //		if (!dir.exists()) {
 //			dir.mkdirs();
@@ -80,7 +83,7 @@ public class ImageService {
 //			}
 //		}
 //		return true;
-//	}
+	}
 //
 //	public List<String> compareContent(String content, String oldcontent) {
 //		List<String> oldFiles = new ArrayList<String>();
